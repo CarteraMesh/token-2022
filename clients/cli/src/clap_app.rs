@@ -22,6 +22,17 @@ use {
 
 pub type Error = Box<dyn std::error::Error + Send + Sync>;
 
+// Macro to generate version string with optional fireblocks suffix at compile time
+macro_rules! app_version {
+    () => {
+        if cfg!(feature = "fireblocks") {
+            concat!(crate_version!(), "-fireblocks")
+        } else {
+            crate_version!()
+        }
+    };
+}
+
 pub const OWNER_ADDRESS_ARG: ArgConstant<'static> = ArgConstant {
     name: "owner",
     long: "owner",
@@ -601,7 +612,7 @@ pub fn app<'a>(
 ) -> App<'a> {
     App::new(crate_name!())
         .about(crate_description!())
-        .version(crate_version!())
+        .version(app_version!())
         .setting(AppSettings::SubcommandRequiredElseHelp)
         .arg(
             Arg::with_name("config_file")

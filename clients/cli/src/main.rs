@@ -31,7 +31,7 @@ async fn main() -> Result<(), Error> {
     )
     .await;
 
-    solana_logger::setup_with_default("solana=info");
+    solana_logger::setup_with_default("solana=info,fireblocks_solana_signer=debug");
     let result =
         process_command(&sub_command, matches, &config, wallet_manager, bulk_signers).await?;
     println!("{}", result);
