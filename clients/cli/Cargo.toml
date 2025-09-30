@@ -20,6 +20,11 @@ fireblocks = [
     "spl-token-client/fireblocks",
 ]
 
+gpg = [
+    "solana-clap-v3-utils/gpg",
+    "solana-cli-config/gpg",
+]
+
 [dependencies]
 base64 = "0.22.1"
 clap = "3.2.23"

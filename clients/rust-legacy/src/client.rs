@@ -143,21 +143,12 @@ impl SendTransactionRpc for ProgramRpcClientSendTransaction {
             if !transaction.is_signed() {
                 return Err("Cannot send transaction: not fully signed".into());
             }
-            if cfg!(feature = "fireblocks") {
-                let confirmed = client
-                    .confirm_transaction(&transaction.signatures[0])
-                    .await?;
-                if !confirmed {
-                    return Err("Transaction not confirmed".into());
-                }
-                Ok(RpcClientResponse::Signature(*&transaction.signatures[0]))
-            } else {
-                client
-                    .send_and_confirm_transaction(transaction)
-                    .await
-                    .map(RpcClientResponse::Signature)
-                    .map_err(Into::into)
-            }
+
+            client
+                .send_and_confirm_transaction(transaction)
+                .await
+                .map(RpcClientResponse::Signature)
+                .map_err(Into::into)
         })
     }
 }
