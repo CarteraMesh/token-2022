@@ -4,9 +4,9 @@ permissions:
 env:
   RPC_URL: ${{ secrets.RPC_URL }}
   RUST_LOG: 'info,fireblocks_solana_signer=debug'
-  FIREBLOCKS_ENDPOINT: https://sandbox-api.fireblocks.io
-  FIREBLOCKS_POLL_TIMEOUT: '15'
-  FIREBLOCKS_POLL_INTERVAL: '3'
+  FIREBLOCKS_ENDPOINT: ${{ vars.FIREBLOCKS_ENDPOINT }}
+  FIREBLOCKS_POLL_TIMEOUT: '90'
+  FIREBLOCKS_POLL_INTERVAL: '5'
   FIREBLOCKS_DEVNET: 'true'
   FIREBLOCKS_VAULT: '0'
 on:
@@ -24,7 +24,7 @@ jobs:
     runs-on: ${{ vars.RUNNER }}
     name: build cli
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           submodules: true
       - uses: ubicloud/rust-cache@v2
@@ -40,12 +40,13 @@ jobs:
           fireblocks-secret: |
             ${{ secrets.FIREBLOCKS_SECRET }}
           fireblocks-api-key: ${{ secrets.FIREBLOCKS_API_KEY }}
+          fireblocks-endpoint: ${{ vars.FIREBLOCKS_ENDPOINT }}
       - name: install deps
         run: |
           sudo apt-get install -y libgpgme-dev libhidapi-dev libudev-dev
       - name: cargo build spl-token-cli solana cli
         run: |
-          cargo build -p spl-token-cli --features fireblocks
+          cargo build -p spl-token-cli
       - name: transfer
         run: |
           target/debug/spl-token transfer --fund-recipient  --with-compute-unit-limit 98401  --with-memo "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"  4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU 1 215r9xfTFVYcE9g3fAUGowauM84egyUvFCbSo3LKNaep
