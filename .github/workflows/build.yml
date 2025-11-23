@@ -49,4 +49,4 @@ jobs:
           cargo build -p spl-token-cli
       - name: transfer
         run: |
-          target/debug/spl-token transfer --fund-recipient  --with-compute-unit-limit 98401  --with-memo "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"  4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU 1 215r9xfTFVYcE9g3fAUGowauM84egyUvFCbSo3LKNaep
+          target/debug/spl-token transfer --fund-recipient  --with-compute-unit-limit 98401  --with-memo "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"  4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU 0.00001 215r9xfTFVYcE9g3fAUGowauM84egyUvFCbSo3LKNaep
